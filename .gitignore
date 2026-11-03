@@ -1,0 +1,17 @@
+# Environment and secrets
+.streamlit/secrets.toml
+.env
+.venv/
+venv/
+ENV/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
