@@ -36,23 +36,27 @@ except (ImportError, Exception):
 def get_api_key_from_env_or_secrets() -> Optional[str]:
     """
     Safely retrieves the Gemini API key from:
-    1. Streamlit secrets (if running in streamlit context)
-    2. Environment variable GEMINI_API_KEY
+    1. Environment variable GEMINI_API_KEY (primary for Railway/production)
+    2. Streamlit secrets (local development fallback)
     """
-    # 1. Try streamlit secrets
-    try:
-        import streamlit as st
-        if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
-            key = st.secrets["GEMINI_API_KEY"]
-            if key and key.strip() and not key.startswith("your_"):
-                return key.strip()
-    except Exception:
-        pass
-
-    # 2. Try OS environment variable
+    # 1. Primary: Check OS environment variable
     env_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if env_key and not env_key.startswith("your_"):
         return env_key
+
+    # 2. Fallback: Check Streamlit secrets (safe when secrets.toml doesn't exist)
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            try:
+                if "GEMINI_API_KEY" in st.secrets:
+                    key = st.secrets["GEMINI_API_KEY"]
+                    if key and str(key).strip() and not str(key).strip().startswith("your_"):
+                        return str(key).strip()
+            except (FileNotFoundError, KeyError, Exception):
+                pass
+    except Exception:
+        pass
 
     return None
 

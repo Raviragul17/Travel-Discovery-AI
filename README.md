@@ -82,6 +82,31 @@ The application will launch automatically in your default browser at `http://loc
 
 ---
 
+## 🚂 Deployment to Railway
+
+Deploying Travel Discovery AI on [Railway](https://railway.com/) takes less than 2 minutes:
+
+1. **Push your code to GitHub**:
+   ```bash
+   git add .
+   git commit -m "Prepare for Railway deployment"
+   git push origin main
+   ```
+2. **Open Railway Dashboard**:
+   - Go to [railway.com](https://railway.com/) and click **"New Project"**.
+   - Select **"Deploy from GitHub repo"** and choose your `Travel-Discovery-AI` repository.
+3. **Configure Environment Variables**:
+   - In your Railway project service settings, navigate to the **Variables** tab.
+   - Click **"New Variable"** and add:
+     ```text
+     GEMINI_API_KEY = your_actual_gemini_api_key_here
+     ```
+4. **Deploy & Generate Domain**:
+   - Railway automatically detects the `Procfile` and dynamically binds the `$PORT` and `0.0.0.0` address.
+   - Under the **Settings** tab ➔ **Networking**, click **"Generate Domain"** to get a public `https://...up.railway.app` URL.
+
+---
+
 ## ☁️ Deployment to Streamlit Community Cloud
 
 Deploying your Travel Discovery AI chatbot online for free is simple:
