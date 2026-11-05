@@ -60,13 +60,17 @@ def get_custom_css(dark_mode: bool = False) -> str:
     return f"""
     <style>
     /* -------------------------------------------------------------
-       1. Typography & Global Resets
+       1. Typography, Global Resets & Wide Canvas
        ------------------------------------------------------------- */
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
-    html, body, [class*="css"], [class*="st-"] {{
+    html, body, .stApp {{
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         color: {text_primary};
+        margin: 0 !important;
+        padding: 0 !important;
     }}
 
     h1, h2, h3, h4, .brand-title, .hero-title, .page-header-title {{
@@ -81,11 +85,28 @@ def get_custom_css(dark_mode: bool = False) -> str:
         color: {text_primary} !important;
     }}
 
-    /* Main Container Padding */
+    /* Main Viewport: Full-width canvas */
+    .main,
+    section[data-testid="stMain"],
+    div[data-testid="stAppViewContainer"] > section.main {{
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }}
+
+    /* Main Content Container: 92–95% screen width, scaling up to 1750px on desktop */
+    .main .block-container,
+    div[data-testid="stMainBlockContainer"],
+    div[data-testid="stVerticalBlock"] > div.block-container,
+    .stMainBlockContainer,
     .block-container {{
-        padding-top: 1.6rem !important;
+        width: 94% !important;
+        max-width: 1750px !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 3.5rem !important;
-        max-width: 1240px;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }}
 
     /* -------------------------------------------------------------
@@ -239,7 +260,7 @@ def get_custom_css(dark_mode: bool = False) -> str:
     }}
     .hero-overlay {{
         position: relative;
-        padding: 56px 32px 48px 32px;
+        padding: 72px 8% 60px 8%;
         background: linear-gradient(180deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.88) 100%);
         backdrop-filter: blur(2px);
         text-align: center;
@@ -383,7 +404,7 @@ def get_custom_css(dark_mode: bool = False) -> str:
     .dest-image-wrap {{
         position: relative;
         width: 100%;
-        height: 205px;
+        height: 240px;
         overflow: hidden;
         background-color: {bg_card_alt};
     }}
@@ -627,8 +648,35 @@ def get_custom_css(dark_mode: bool = False) -> str:
     }}
 
     /* -------------------------------------------------------------
-       11. Responsive Mobile Design
+       11. Responsive Layout — Tablet & Mobile
        ------------------------------------------------------------- */
+
+    /* Tablet: 2 columns */
+    @media (max-width: 1024px) {{
+        div[data-testid="stHorizontalBlock"] > div[data-testid="stVerticalBlock"] {{
+            min-width: 45% !important;
+            flex: 0 0 45% !important;
+        }}
+    }}
+
+    /* Mobile: 1 column, wrap */
+    @media (max-width: 640px) {{
+        div[data-testid="stHorizontalBlock"] {{
+            flex-wrap: wrap !important;
+        }}
+        div[data-testid="stHorizontalBlock"] > div[data-testid="stVerticalBlock"] {{
+            min-width: 100% !important;
+            flex: 0 0 100% !important;
+        }}
+        .main .block-container,
+        div[data-testid="stMainBlockContainer"],
+        .block-container {{
+            width: 100% !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
+        }}
+    }}
+
     @media (max-width: 768px) {{
         .block-container {{
             padding-top: 1rem !important;
