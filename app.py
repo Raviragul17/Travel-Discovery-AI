@@ -203,9 +203,9 @@ if st.session_state.current_page == config.PAGES["HOME"]:
         unsafe_allow_html=True
     )
     
-    dest_cols = st.columns(3)
+    dest_cols = st.columns(len(config.POPULAR_DESTINATIONS))
     for idx, dest in enumerate(config.POPULAR_DESTINATIONS):
-        with dest_cols[idx % 3]:
+        with dest_cols[idx]:
             ui_components.render_destination_card(dest)
             if st.button(f"Discover {dest['title']} ➔", key=f"dest_btn_{idx}", use_container_width=True):
                 switch_page(config.PAGES["CHAT"], query=dest["prompt"])
@@ -221,9 +221,9 @@ if st.session_state.current_page == config.PAGES["HOME"]:
         "</p>",
         unsafe_allow_html=True
     )
-    feat_cols = st.columns(3)
+    feat_cols = st.columns(len(config.FEATURE_CARDS))
     for idx, feat in enumerate(config.FEATURE_CARDS):
-        with feat_cols[idx % 3]:
+        with feat_cols[idx]:
             ui_components.render_feature_card(feat)
             st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
 

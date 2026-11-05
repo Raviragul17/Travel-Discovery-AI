@@ -85,28 +85,44 @@ def get_custom_css(dark_mode: bool = False) -> str:
         color: {text_primary} !important;
     }}
 
-    /* Main Viewport: Full-width canvas */
+    /* ── Main Viewport: Full Available Desktop Canvas ── */
     .main,
     section[data-testid="stMain"],
     div[data-testid="stAppViewContainer"] > section.main {{
         width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
         overflow-x: hidden !important;
     }}
 
-    /* Main Content Container: 92–95% screen width, scaling up to 1750px on desktop */
-    .main .block-container,
+    /* ── Main Content Container: ~94% of desktop width, max 1750px, centered ── */
+    section[data-testid="stMain"] > div[data-testid="stMainBlockContainer"],
+    section[data-testid="stMain"] > div.stMainBlockContainer,
+    section[data-testid="stMain"] .block-container,
     div[data-testid="stMainBlockContainer"],
-    div[data-testid="stVerticalBlock"] > div.block-container,
-    .stMainBlockContainer,
-    .block-container {{
+    .stMainBlockContainer {{
         width: 94% !important;
         max-width: 1750px !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
-        padding-top: 1.5rem !important;
-        padding-bottom: 3.5rem !important;
         margin-left: auto !important;
         margin-right: auto !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        padding-top: 1.5rem !important;
+        padding-bottom: 3.5rem !important;
+        box-sizing: border-box !important;
+    }}
+
+    /* Child vertical blocks occupy full 100% width of the main container */
+    section[data-testid="stMain"] div[data-testid="stVerticalBlock"] {{
+        width: 100% !important;
+        max-width: 100% !important;
+    }}
+
+    /* ── Bottom block (if used) also gets uncapped ── */
+    div[data-testid="stBottomBlockContainer"],
+    .stBottomBlockContainer {{
+        max-width: none !important;
+        width: 100% !important;
     }}
 
     /* -------------------------------------------------------------
@@ -247,6 +263,7 @@ def get_custom_css(dark_mode: bool = False) -> str:
        ------------------------------------------------------------- */
     .hero-banner-wrap {{
         position: relative;
+        width: 100% !important;
         border-radius: 26px;
         overflow: hidden;
         margin-bottom: 32px;
@@ -260,11 +277,13 @@ def get_custom_css(dark_mode: bool = False) -> str:
     }}
     .hero-overlay {{
         position: relative;
-        padding: 72px 8% 60px 8%;
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.88) 100%);
+        width: 100% !important;
+        padding: 76px 6% 64px 6%;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.70) 0%, rgba(15, 23, 42, 0.88) 100%);
         backdrop-filter: blur(2px);
         text-align: center;
         color: #FFFFFF;
+        box-sizing: border-box !important;
     }}
     .hero-pill-badge {{
         display: inline-flex;
@@ -285,11 +304,11 @@ def get_custom_css(dark_mode: bool = False) -> str:
     }}
     .hero-title {{
         font-family: 'Outfit', sans-serif !important;
-        font-size: 3.1rem !important;
+        font-size: 3.2rem !important;
         font-weight: 800 !important;
         line-height: 1.18 !important;
         color: #FFFFFF !important;
-        max-width: 860px;
+        max-width: 1100px;
         margin: 0 auto 18px auto;
         letter-spacing: -0.03em !important;
         text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
@@ -301,10 +320,10 @@ def get_custom_css(dark_mode: bool = False) -> str:
         display: inline-block;
     }}
     .hero-subtitle {{
-        font-size: 1.15rem;
+        font-size: 1.18rem;
         line-height: 1.65;
-        color: rgba(241, 245, 249, 0.94);
-        max-width: 720px;
+        color: rgba(241, 245, 249, 0.95);
+        max-width: 950px;
         margin: 0 auto 28px auto;
         font-weight: 400;
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
@@ -393,8 +412,10 @@ def get_custom_css(dark_mode: bool = False) -> str:
         box-shadow: {card_shadow};
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
         height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: column;
+        box-sizing: border-box;
     }}
     .dest-card:hover {{
         transform: translateY(-6px);
@@ -404,7 +425,7 @@ def get_custom_css(dark_mode: bool = False) -> str:
     .dest-image-wrap {{
         position: relative;
         width: 100%;
-        height: 240px;
+        height: 230px;
         overflow: hidden;
         background-color: {bg_card_alt};
     }}
@@ -412,6 +433,7 @@ def get_custom_css(dark_mode: bool = False) -> str:
         width: 100%;
         height: 100%;
         object-fit: cover;
+        display: block;
         transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }}
     .dest-card:hover .dest-image {{
@@ -437,6 +459,8 @@ def get_custom_css(dark_mode: bool = False) -> str:
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        justify-content: space-between;
+        box-sizing: border-box;
     }}
     .dest-title {{
         font-family: 'Outfit', sans-serif;
@@ -450,7 +474,7 @@ def get_custom_css(dark_mode: bool = False) -> str:
         font-size: 0.88rem;
         color: {text_secondary};
         line-height: 1.55;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         flex-grow: 1;
     }}
 
@@ -648,41 +672,73 @@ def get_custom_css(dark_mode: bool = False) -> str:
     }}
 
     /* -------------------------------------------------------------
-       11. Responsive Layout — Tablet & Mobile
+       11. Responsive Layout & Grid Breakpoints
        ------------------------------------------------------------- */
 
-    /* Tablet: 2 columns */
-    @media (max-width: 1024px) {{
-        div[data-testid="stHorizontalBlock"] > div[data-testid="stVerticalBlock"] {{
-            min-width: 45% !important;
-            flex: 0 0 45% !important;
+    /* Ensure card rows wrap properly */
+    div[data-testid="stHorizontalBlock"]:has(.dest-card),
+    div[data-testid="stHorizontalBlock"]:has(.feature-card) {{
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 1.25rem !important;
+        justify-content: flex-start !important;
+    }}
+
+    /* ── Breakpoint 1: Large Desktop (> 1400px) — 4 columns for cards ── */
+    @media (min-width: 1401px) {{
+        div[data-testid="stHorizontalBlock"]:has(.dest-card) > div[data-testid="stColumn"],
+        div[data-testid="stHorizontalBlock"]:has(.feature-card) > div[data-testid="stColumn"] {{
+            width: calc(25% - 1rem) !important;
+            max-width: calc(25% - 1rem) !important;
+            flex: 0 0 calc(25% - 1rem) !important;
+            min-width: calc(25% - 1rem) !important;
         }}
     }}
 
-    /* Mobile: 1 column, wrap */
+    /* ── Breakpoint 2: Standard Desktop (1025px – 1400px) — 3 columns for cards ── */
+    @media (min-width: 1025px) and (max-width: 1400px) {{
+        div[data-testid="stHorizontalBlock"]:has(.dest-card) > div[data-testid="stColumn"],
+        div[data-testid="stHorizontalBlock"]:has(.feature-card) > div[data-testid="stColumn"] {{
+            width: calc(33.333% - 0.9rem) !important;
+            max-width: calc(33.333% - 0.9rem) !important;
+            flex: 0 0 calc(33.333% - 0.9rem) !important;
+            min-width: calc(33.333% - 0.9rem) !important;
+        }}
+    }}
+
+    /* ── Breakpoint 3: Tablet (641px – 1024px) — 2 columns for cards ── */
+    @media (min-width: 641px) and (max-width: 1024px) {{
+        div[data-testid="stHorizontalBlock"]:has(.dest-card) > div[data-testid="stColumn"],
+        div[data-testid="stHorizontalBlock"]:has(.feature-card) > div[data-testid="stColumn"] {{
+            width: calc(50% - 0.75rem) !important;
+            max-width: calc(50% - 0.75rem) !important;
+            flex: 0 0 calc(50% - 0.75rem) !important;
+            min-width: calc(50% - 0.75rem) !important;
+        }}
+    }}
+
+    /* ── Breakpoint 4: Mobile (<= 640px) — 1 column full-width ── */
     @media (max-width: 640px) {{
         div[data-testid="stHorizontalBlock"] {{
             flex-wrap: wrap !important;
         }}
-        div[data-testid="stHorizontalBlock"] > div[data-testid="stVerticalBlock"] {{
-            min-width: 100% !important;
-            flex: 0 0 100% !important;
-        }}
-        .main .block-container,
-        div[data-testid="stMainBlockContainer"],
-        .block-container {{
+        div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"],
+        div[data-testid="stHorizontalBlock"] > div.stColumn {{
             width: 100% !important;
-            padding-left: 0.6rem !important;
-            padding-right: 0.6rem !important;
+            max-width: 100% !important;
+            flex: 0 0 100% !important;
+            min-width: 100% !important;
+        }}
+        section[data-testid="stMain"] > div[data-testid="stMainBlockContainer"],
+        section[data-testid="stMain"] .block-container {{
+            width: 100% !important;
+            padding-left: 0.65rem !important;
+            padding-right: 0.65rem !important;
         }}
     }}
 
+    /* Mobile fine-tuning (<= 768px) */
     @media (max-width: 768px) {{
-        .block-container {{
-            padding-top: 1rem !important;
-            padding-left: 0.8rem !important;
-            padding-right: 0.8rem !important;
-        }}
         .hero-overlay {{
             padding: 36px 18px 32px 18px !important;
         }}
@@ -707,7 +763,7 @@ def get_custom_css(dark_mode: bool = False) -> str:
             font-size: 1.45rem !important;
         }}
         .dest-image-wrap {{
-            height: 175px !important;
+            height: 185px !important;
         }}
         .chat-bubble-user {{
             max-width: 90% !important;
